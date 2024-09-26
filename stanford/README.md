@@ -1,0 +1,4 @@
+- camera.owl: https://protege.stanford.edu/ontologies/camera.owl
+- koala.owl: https://protege.stanford.edu/ontologies/koala.owl
+- pizza.owl: https://protege.stanford.edu/ontologies/pizza/pizza.owl
+- travel.owl: https://protege.stanford.edu/ontologies/travel.owl
