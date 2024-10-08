@@ -1,0 +1,70 @@
+@prefix : <http://www.owl-ontologies.com/travel.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+<http://www.owl-ontologies.com/travel.owl> a owl:Ontology; rdfs:comment "An example ontology for tutorial purposes."^^xsd:string; owl:versionInfo "1.0 by Holger Knublauch (holger@smi.stanford.edu)"^^xsd:string .
+### Object Properties
+:hasAccommodation a owl:ObjectProperty; rdfs:domain :Destination; rdfs:range :Accommodation .
+:hasActivity a owl:ObjectProperty; rdfs:domain :Destination; rdfs:range :Activity; owl:inverseOf :isOfferedAt .
+:hasContact a owl:ObjectProperty; rdfs:domain :Activity; rdfs:range :Contact .
+:hasPart a owl:ObjectProperty, owl:TransitiveProperty; rdfs:domain :Destination; rdfs:range :Destination .
+:hasRating a owl:ObjectProperty; rdfs:domain :Accommodation; rdfs:range :AccommodationRating .
+:isOfferedAt a owl:ObjectProperty; rdfs:domain :Activity; rdfs:range :Destination; owl:inverseOf :hasActivity .
+### Data Properties
+:hasCity a owl:DatatypeProperty, owl:FunctionalProperty; rdfs:domain :Contact; rdfs:range xsd:string .
+:hasEMail a owl:DatatypeProperty, owl:FunctionalProperty; rdfs:domain :Contact; rdfs:range xsd:string .
+:hasStreet a owl:DatatypeProperty, owl:FunctionalProperty; rdfs:domain :Contact; rdfs:range xsd:string .
+:hasZipCode a owl:DatatypeProperty, owl:FunctionalProperty; rdfs:domain :Contact; rdfs:range xsd:int .
+### Classes
+:Accommodation a owl:Class; rdfs:comment "A place to stay for tourists."^^xsd:string .
+:AccommodationRating a owl:Class; owl:equivalentClass [ a owl:Class; owl:oneOf ( :OneStarRating :ThreeStarRating :TwoStarRating ) ]; rdfs:comment "Consists of exactly three individuals."^^xsd:string .
+:Activity a owl:Class .
+:Adventure a owl:Class; rdfs:subClassOf :Activity; owl:disjointWith :Relaxation, :Sightseeing, :Sports .
+:BackpackersDestination a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Destination [ a owl:Restriction; owl:onProperty :hasAccommodation; owl:someValuesFrom :BudgetAccommodation ] [ a owl:Restriction; owl:onProperty :hasActivity; owl:someValuesFrom [ a owl:Class; owl:unionOf ( :Adventure :Sports ) ] ] ) ]; rdfs:comment "A destination that provides budget accommodation and offers sport or adventure activities."^^xsd:string .
+:Beach a owl:Class; rdfs:subClassOf :Destination .
+:BedAndBreakfast a owl:Class; rdfs:subClassOf :Accommodation; owl:disjointWith :Campground, :Hotel .
+:BudgetAccommodation a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Accommodation [ a owl:Restriction; owl:onProperty :hasRating; owl:someValuesFrom [ a owl:Class; owl:oneOf ( :OneStarRating :TwoStarRating ) ] ] ) ]; rdfs:comment "Accommodation that has either one or two star rating."^^xsd:string .
+:BudgetHotelDestination a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Destination [ a owl:Restriction; owl:onProperty :hasAccommodation; owl:someValuesFrom [ a owl:Class; owl:intersectionOf ( :BudgetAccommodation :Hotel ) ] ] ) ]; rdfs:comment "A destination with a hotel that is also a budget accommodation."^^xsd:string .
+:BunjeeJumping a owl:Class; rdfs:subClassOf :Adventure .
+:Campground a owl:Class; rdfs:subClassOf :Accommodation, [ a owl:Restriction; owl:onProperty :hasRating; owl:hasValue :OneStarRating ]; owl:disjointWith :Hotel .
+:Capital a owl:Class; rdfs:subClassOf :City, [ a owl:Restriction; owl:onProperty :hasActivity; owl:someValuesFrom :Museums ] .
+:City a owl:Class; rdfs:subClassOf :UrbanArea, [ a owl:Restriction; owl:onProperty :hasAccommodation; owl:someValuesFrom :LuxuryHotel ] .
+:Contact a owl:Class .
+:Destination a owl:Class .
+:FamilyDestination a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Destination [ a owl:Restriction; owl:onProperty :hasAccommodation; owl:minCardinality "1"^^xsd:int ] [ a owl:Restriction; owl:onProperty :hasActivity; owl:minCardinality "2"^^xsd:int ] ) ]; rdfs:comment "A destination with at least one accommodation and at least 2 activities."^^xsd:string .
+:Farmland a owl:Class; rdfs:subClassOf :RuralArea .
+:Hiking a owl:Class; rdfs:subClassOf :Sports .
+:Hotel a owl:Class; rdfs:subClassOf :Accommodation .
+:LuxuryHotel a owl:Class; rdfs:subClassOf :Hotel, [ a owl:Restriction; owl:onProperty :hasRating; owl:hasValue :ThreeStarRating ] .
+:Museums a owl:Class; rdfs:subClassOf :Sightseeing .
+:NationalPark a owl:Class; rdfs:subClassOf :RuralArea, [ a owl:Restriction; owl:onProperty :hasAccommodation; owl:someValuesFrom :Campground ], [ a owl:Restriction; owl:onProperty :hasActivity; owl:someValuesFrom :Hiking ] .
+:QuietDestination a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Destination [ a owl:Class; owl:complementOf :FamilyDestination ] ) ]; rdfs:comment "A destination that is not frequented by noisy families."^^xsd:string .
+:Relaxation a owl:Class; rdfs:subClassOf :Activity; owl:disjointWith :Sightseeing, :Sports .
+:RetireeDestination a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Destination [ a owl:Restriction; owl:onProperty :hasAccommodation; owl:someValuesFrom [ a owl:Restriction; owl:onProperty :hasRating; owl:hasValue :ThreeStarRating ] ] [ a owl:Restriction; owl:onProperty :hasActivity; owl:someValuesFrom :Sightseeing ] ) ]; rdfs:comment "A destination with at least one three star accommodation and sightseeing opportunities."^^xsd:string .
+:RuralArea a owl:Class; rdfs:subClassOf :Destination; owl:disjointWith :UrbanArea .
+:Safari a owl:Class; rdfs:subClassOf :Adventure, :Sightseeing .
+:Sightseeing a owl:Class; rdfs:subClassOf :Activity; owl:disjointWith :Sports .
+:Sports a owl:Class; rdfs:subClassOf :Activity .
+:Sunbathing a owl:Class; rdfs:subClassOf :Relaxation .
+:Surfing a owl:Class; rdfs:subClassOf :Sports .
+:Town a owl:Class; rdfs:subClassOf :UrbanArea .
+:UrbanArea a owl:Class; rdfs:subClassOf :Destination .
+:Yoga a owl:Class; rdfs:subClassOf :Relaxation .
+### Annotations
+:BlueMountains a :NationalPark .
+:BondiBeach a :Beach .
+:Cairns a :City .
+:Canberra a :Capital .
+:CapeYork a :RuralArea .
+:Coonabarabran a :Town .
+:CurrawongBeach a :Beach .
+:FourSeasons a :LuxuryHotel .
+:OneStarRating a :AccommodationRating; owl:differentFrom :ThreeStarRating, :TwoStarRating .
+:Sydney a :Capital; :hasAccommodation :FourSeasons; :hasPart :BondiBeach, :CurrawongBeach .
+:ThreeStarRating a :AccommodationRating; owl:differentFrom :OneStarRating, :TwoStarRating .
+:TwoStarRating a :AccommodationRating; owl:differentFrom :OneStarRating, :ThreeStarRating .
+:Warrumbungles a :NationalPark .
+:Woomera a :RuralArea .
+
+### Serialized using the ttlser uncompact deterministic serializer v1.2.1

@@ -1,0 +1,50 @@
+@prefix : <http://www.xfront.com/owl/ontologies/camera/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+<http://www.xfront.com/owl/ontologies/camera/> a owl:Ontology; rdfs:comment """
+        Camera OWL Ontology                           
+                                                                  
+      Author: Roger L. Costello                                   
+      Acknowlegements: Many thanks to the following people for    
+                       their invaluable input:                    
+                          Richard McCullough, Yuzhong Qu,         
+                          Leo Sauermann, Brian McBride and        
+                          Jim Farrugia.                           
+        """ .
+### Object Properties
+:body a owl:ObjectProperty; rdfs:subPropertyOf :part; rdfs:domain :Camera; rdfs:range :Body .
+:compatibleWith a owl:ObjectProperty; rdfs:domain :Lens; rdfs:range :Body .
+:cost a owl:ObjectProperty; rdfs:domain :PurchaseableItem; rdfs:range :Money .
+:lens a owl:ObjectProperty; rdfs:subPropertyOf :part; rdfs:domain :Camera; rdfs:range :Lens .
+:part a owl:ObjectProperty .
+:shutter-speed a owl:ObjectProperty; rdfs:domain :Body; rdfs:range :Range .
+:viewFinder a owl:FunctionalProperty, owl:ObjectProperty; rdfs:domain :Camera; rdfs:range :Viewer .
+### Data Properties
+:aperture a owl:DatatypeProperty; rdfs:domain :Lens; rdfs:range xsd:string .
+:currency a owl:DatatypeProperty; rdfs:domain :Money; rdfs:range xsd:string .
+:f-stop a owl:DatatypeProperty; rdfs:domain :Lens; rdfs:range xsd:string; owl:equivalentProperty :aperture .
+:focal-length a owl:DatatypeProperty; rdfs:domain :Lens; rdfs:range xsd:string; owl:equivalentProperty :size .
+:max a owl:DatatypeProperty; rdfs:domain :Range; rdfs:range xsd:float .
+:min a owl:DatatypeProperty; rdfs:domain :Range; rdfs:range xsd:float .
+:size a owl:DatatypeProperty; rdfs:domain :Lens; rdfs:range xsd:string .
+:units a owl:DatatypeProperty; rdfs:domain :Range; rdfs:range xsd:string .
+### Classes
+:Body a owl:Class; rdfs:subClassOf :PurchaseableItem .
+:BodyWithNonAdjustableShutterSpeed a owl:Class; owl:intersectionOf ( :Body [ a owl:Restriction; owl:onProperty :shutter-speed; owl:cardinality "0" ] ) .
+:Camera a owl:Class; rdfs:subClassOf :PurchaseableItem .
+:Digital a owl:Class; rdfs:subClassOf :Camera .
+:Large-Format a owl:Class; rdfs:subClassOf :Camera, [ a owl:Restriction; owl:onProperty :body; owl:allValuesFrom :BodyWithNonAdjustableShutterSpeed ] .
+:Lens a owl:Class; rdfs:subClassOf :PurchaseableItem .
+:Money a owl:Class; rdfs:subClassOf owl:Thing .
+:PurchaseableItem a owl:Class; rdfs:subClassOf owl:Thing .
+:Range a owl:Class; rdfs:subClassOf owl:Thing .
+:SLR a owl:Class; owl:intersectionOf ( :Camera [ a owl:Restriction; owl:onProperty :viewFinder; owl:hasValue :ThroughTheLens ] ) .
+:Viewer a owl:Class; owl:oneOf ( :ThroughTheLens :WindowOnTopOfCamera ) .
+:Window a owl:Class; rdfs:subClassOf owl:Thing .
+### Annotations
+:ThroughTheLens a :Window .
+:WindowOnTopOfCamera a :Window .
+
+### Serialized using the ttlser uncompact deterministic serializer v1.2.1

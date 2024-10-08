@@ -1,0 +1,43 @@
+@prefix : <http://protege.stanford.edu/plugins/owl/owl-library/koala.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+<http://protege.stanford.edu/plugins/owl/owl-library/koala.owl> a owl:Ontology .
+### Object Properties
+:hasChildren a owl:ObjectProperty; rdfs:domain :Animal; rdfs:range :Animal .
+:hasDegree a owl:ObjectProperty; rdfs:domain :Person; rdfs:range :Degree .
+:hasGender a owl:FunctionalProperty, owl:ObjectProperty; rdfs:domain :Animal; rdfs:range :Gender .
+:hasHabitat a owl:ObjectProperty; rdfs:domain :Animal; rdfs:range :Habitat .
+### Data Properties
+:isHardWorking a owl:DatatypeProperty, owl:FunctionalProperty; rdfs:domain :Person; rdfs:range xsd:boolean .
+### Classes
+:Animal a owl:Class; rdfs:subClassOf [ a owl:Restriction; owl:onProperty :hasGender; owl:cardinality "1"^^xsd:int ], [ a owl:Restriction; owl:onProperty :hasHabitat; owl:minCardinality "1"^^xsd:int ]; owl:versionInfo "1.1"; rdfs:seeAlso "Male" .
+:Degree a owl:Class .
+:DryEucalyptForest a owl:Class; rdfs:subClassOf :Forest .
+:Female a owl:Class; owl:equivalentClass [ a owl:Restriction; owl:onProperty :hasGender; owl:hasValue :female ] .
+:Forest a owl:Class; rdfs:subClassOf :Habitat .
+:Gender a owl:Class .
+:GraduateStudent a owl:Class; rdfs:subClassOf :Student, [ a owl:Restriction; owl:onProperty :hasDegree; owl:someValuesFrom [ a owl:Class; owl:oneOf ( :BA :BS ) ] ] .
+:Habitat a owl:Class .
+:Koala a owl:Class; rdfs:subClassOf :Marsupials, [ a owl:Restriction; owl:onProperty :hasHabitat; owl:someValuesFrom :DryEucalyptForest ], [ a owl:Restriction; owl:onProperty :isHardWorking; owl:hasValue false ] .
+:KoalaWithPhD a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Koala [ a owl:Restriction; owl:onProperty :hasDegree; owl:hasValue :PhD ] ) ]; owl:versionInfo "1.2" .
+:Male a owl:Class; owl:equivalentClass [ a owl:Restriction; owl:onProperty :hasGender; owl:hasValue :male ] .
+:MaleStudentWith3Daughters a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Student [ a owl:Restriction; owl:onProperty :hasChildren; owl:allValuesFrom :Female ] [ a owl:Restriction; owl:onProperty :hasChildren; owl:cardinality "3"^^xsd:int ] [ a owl:Restriction; owl:onProperty :hasGender; owl:hasValue :male ] ) ] .
+:Marsupials a owl:Class; rdfs:subClassOf :Animal; owl:disjointWith :Person .
+:Parent a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Animal [ a owl:Restriction; owl:onProperty :hasChildren; owl:minCardinality "1"^^xsd:int ] ) ]; rdfs:subClassOf :Animal .
+:Person a owl:Class; rdfs:subClassOf :Animal .
+:Quokka a owl:Class; rdfs:subClassOf :Marsupials, [ a owl:Restriction; owl:onProperty :isHardWorking; owl:hasValue true ] .
+:Rainforest a owl:Class; rdfs:subClassOf :Forest .
+:Student a owl:Class; owl:equivalentClass [ a owl:Class; owl:intersectionOf ( :Person [ a owl:Restriction; owl:onProperty :hasHabitat; owl:someValuesFrom :University ] [ a owl:Restriction; owl:onProperty :isHardWorking; owl:hasValue true ] ) ] .
+:TasmanianDevil a owl:Class; rdfs:subClassOf :Marsupials .
+:University a owl:Class; rdfs:subClassOf :Habitat .
+### Annotations
+:BA a :Degree .
+:BS a :Degree .
+:female a :Gender .
+:MA a :Degree .
+:male a :Gender .
+:PhD a :Degree .
+
+### Serialized using the ttlser uncompact deterministic serializer v1.2.1
